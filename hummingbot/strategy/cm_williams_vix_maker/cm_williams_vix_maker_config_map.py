@@ -59,6 +59,7 @@ cm_williams_vix_maker_config_map = {
         validator=validate_market_trading_pair,
         on_validated=lambda value: required_exchanges.append(value),
     ),
+    # Order Parameters
     "order_amount": ConfigVar(
         key="order_amount",
         prompt="What is the amount of base asset per order? >>> ",
@@ -82,22 +83,7 @@ cm_williams_vix_maker_config_map = {
         validator=lambda v: validate_decimal(v, 0, 100, inclusive=False),
         prompt_on_new=True,
     ),
-    "order_refresh_time": ConfigVar(
-        key="order_refresh_time",
-        prompt="How often do you want to refresh orders (in seconds)? >>> ",
-        type_str="float",
-        default=30.0,
-        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
-        prompt_on_new=True,
-    ),
-    "filled_order_delay": ConfigVar(
-        key="filled_order_delay",
-        prompt="How long to wait before placing new orders after fills (in seconds)? >>> ",
-        type_str="float",
-        default=60.0,
-        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
-    ),
-    # VIX specific parameters
+    # VIX Parameters
     "lookback_period": ConfigVar(
         key="lookback_period",
         prompt="Enter lookback period for VIX calculation >>> ",
@@ -138,7 +124,32 @@ cm_williams_vix_maker_config_map = {
         validator=lambda v: validate_decimal(v, min_value=0.0, max_value=1.0, inclusive=True),
         prompt_on_new=True,
     ),
-    # Risk management parameters
+    # Trend Analysis Parameters
+    "ema_short": ConfigVar(
+        key="ema_short",
+        prompt="Enter short-term EMA period >>> ",
+        type_str="int",
+        default=9,
+        validator=lambda v: validate_int(v, min_value=1),
+        prompt_on_new=True,
+    ),
+    "ema_long": ConfigVar(
+        key="ema_long",
+        prompt="Enter long-term EMA period >>> ",
+        type_str="int",
+        default=21,
+        validator=lambda v: validate_int(v, min_value=1),
+        prompt_on_new=True,
+    ),
+    "trend_strength_threshold": ConfigVar(
+        key="trend_strength_threshold",
+        prompt="Enter trend strength threshold (e.g. 0.02 for 2%) >>> ",
+        type_str="decimal",
+        default=Decimal("0.02"),
+        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
+        prompt_on_new=True,
+    ),
+    # Risk Management Parameters
     "max_position_size": ConfigVar(
         key="max_position_size",
         prompt="Enter maximum position size (in base asset, leave blank for 10x order_amount) >>> ",
@@ -163,6 +174,57 @@ cm_williams_vix_maker_config_map = {
         validator=lambda v: validate_decimal(v, 0, 100, inclusive=False),
         prompt_on_new=True,
     ),
+    "dynamic_spread_adjustment": ConfigVar(
+        key="dynamic_spread_adjustment",
+        prompt="Enable dynamic spread adjustment based on inventory? (Yes/No) >>> ",
+        type_str="bool",
+        default=True,
+        validator=validate_bool,
+    ),
+    "inventory_target_base_pct": ConfigVar(
+        key="inventory_target_base_pct",
+        prompt="Enter target base asset percentage (e.g. 0.5 for 50%) >>> ",
+        type_str="decimal",
+        default=Decimal("0.5"),
+        validator=validate_decimal_0_1,
+    ),
+    "risk_factor": ConfigVar(
+        key="risk_factor",
+        prompt="Enter risk factor for position sizing (e.g. 0.5 for conservative, 1.0 for moderate) >>> ",
+        type_str="decimal",
+        default=Decimal("0.5"),
+        validator=lambda v: validate_decimal(v, min_value=0.1, max_value=1.0, inclusive=True),
+    ),
+    "max_order_age": ConfigVar(
+        key="max_order_age",
+        prompt="Maximum time to keep orders open (in seconds) >>> ",
+        type_str="float",
+        default=1800.0,
+        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
+    ),
+    # Advanced Order Management
+    "order_refresh_time": ConfigVar(
+        key="order_refresh_time",
+        prompt="How often do you want to refresh orders (in seconds)? >>> ",
+        type_str="float",
+        default=30.0,
+        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
+        prompt_on_new=True,
+    ),
+    "filled_order_delay": ConfigVar(
+        key="filled_order_delay",
+        prompt="How long to wait before placing new orders after fills (in seconds)? >>> ",
+        type_str="float",
+        default=60.0,
+        validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
+    ),
+    "order_optimization_enabled": ConfigVar(
+        key="order_optimization_enabled",
+        prompt="Do you want to enable best bid ask jumping? (Yes/No) >>> ",
+        type_str="bool",
+        default=False,
+        validator=validate_bool,
+    ),
     "position_cooling_off": ConfigVar(
         key="position_cooling_off",
         prompt="How long to wait before taking new positions (in seconds)? >>> ",
@@ -171,14 +233,7 @@ cm_williams_vix_maker_config_map = {
         validator=lambda v: validate_int(v, min_value=0),
         prompt_on_new=True,
     ),
-    # Advanced parameters
-    "order_optimization_enabled": ConfigVar(
-        key="order_optimization_enabled",
-        prompt="Do you want to enable best bid ask jumping? (Yes/No) >>> ",
-        type_str="bool",
-        default=False,
-        validator=validate_bool,
-    ),
+    # Logging and Reporting
     "logging_options": ConfigVar(
         key="logging_options",
         prompt="Enter logging options (1 for INFO, 2 for DEBUG) >>> ",
@@ -194,5 +249,4 @@ cm_williams_vix_maker_config_map = {
         validator=lambda v: validate_decimal(v, min_value=0.0, inclusive=False),
     ),
 }
-
      
