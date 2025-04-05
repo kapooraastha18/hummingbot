@@ -1,0 +1,1 @@
+from hummingbot.strategy.simple_cm_williams_vix_maker import SimpleCMWilliamsVixMaker
