@@ -1,8 +1,9 @@
 from decimal import Decimal
 import logging
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import numpy as np
 from hummingbot.core.data_type.common import OrderType, PriceType, TradeType
+from hummingbot.core.data_type.order_candidate import OrderCandidate
 from hummingbot.strategy.market_making import MarketMakingStrategy
 from hummingbot.strategy.market_making.market_making_config_map import MarketMakingConfigMap
 
