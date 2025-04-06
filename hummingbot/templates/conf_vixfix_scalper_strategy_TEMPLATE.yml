@@ -1,0 +1,7 @@
+template_version: 1
+strategy: vixfix_scalper
+connector: binance_paper_trade
+market: BTC-USDT
+base_order_amount: 0.001
+profit_target_pct: 0.003
+initial_stop_loss_pct: 0.005
