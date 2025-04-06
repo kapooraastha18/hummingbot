@@ -17,17 +17,17 @@ class VixFixScalperStrategy(StrategyPyBase):
     def logger(cls) -> HummingbotLogger:
         global logger
         if logger is None:
-            logger = logging.getLogger(__name__)
+            logger = logging.getLogger(_name_)
         return logger
 
-    def __init__(
+    def _init_(
         self,
         market_info: MarketTradingPairTuple,
         base_order_amount: Decimal = Decimal("0.001"),
         profit_target_pct: Decimal = Decimal("0.003"),
         initial_stop_loss_pct: Decimal = Decimal("0.005")
     ):
-        super().__init__()
+        super()._init_()
         self._market_info = market_info
         self._base_order_amount = base_order_amount
         self._profit_target_pct = profit_target_pct
@@ -305,3 +305,5 @@ class VixFixScalperStrategy(StrategyPyBase):
             lines.append("No active position")
             
         return "\n".join(lines)
+
+this is what im using now btw
